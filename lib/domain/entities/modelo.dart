@@ -1,4 +1,4 @@
-import 'package:tabela_fipe_changenotifier/domin/entities/schemas/modelo_schema.dart';
+import 'package:tabela_fipe_changenotifier/domain/entities/schemas/modelo_schema.dart';
 
 class Modelo {
   final String codigo;

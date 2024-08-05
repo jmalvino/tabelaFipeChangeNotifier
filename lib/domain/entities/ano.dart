@@ -1,6 +1,5 @@
-import 'package:tabela_fipe_changenotifier/domin/entities/schemas/ano_schema.dart';
+import 'package:tabela_fipe_changenotifier/domain/entities/schemas/ano_schema.dart';
 
-///Passar os mapper pra ca
 class Ano {
   final String codigo;
   final String nome;

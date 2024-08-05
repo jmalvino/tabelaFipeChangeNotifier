@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tabela_fipe_changenotifier/core/error/failure.dart';
-import 'package:tabela_fipe_changenotifier/domin/entities/ano.dart';
-import 'package:tabela_fipe_changenotifier/domin/entities/marca.dart';
-import 'package:tabela_fipe_changenotifier/domin/entities/modelo.dart';
-import 'package:tabela_fipe_changenotifier/domin/entities/veiculo.dart';
-import 'package:tabela_fipe_changenotifier/domin/usecases/get_anos.dart';
-import 'package:tabela_fipe_changenotifier/domin/usecases/get_marcas.dart';
-import 'package:tabela_fipe_changenotifier/domin/usecases/get_modelos.dart';
-import 'package:tabela_fipe_changenotifier/domin/usecases/get_veiculo.dart';
+import 'package:tabela_fipe_changenotifier/domain/entities/ano.dart';
+import 'package:tabela_fipe_changenotifier/domain/entities/marca.dart';
+import 'package:tabela_fipe_changenotifier/domain/entities/modelo.dart';
+import 'package:tabela_fipe_changenotifier/domain/entities/veiculo.dart';
+import 'package:tabela_fipe_changenotifier/domain/usecases/get_anos.dart';
+import 'package:tabela_fipe_changenotifier/domain/usecases/get_marcas.dart';
+import 'package:tabela_fipe_changenotifier/domain/usecases/get_modelos.dart';
+import 'package:tabela_fipe_changenotifier/domain/usecases/get_veiculo.dart';
 
 class ConsultaState extends ChangeNotifier {
   final GetMarcas getMarcas;
@@ -25,7 +25,7 @@ class ConsultaState extends ChangeNotifier {
     required this.tipoVeiculo,
   });
 
-  String _tipoVeiculo = 'carros';
+  String _tipoVeiculo = '';
   List<Marca> _marcas = [];
   List<Modelo> _modelos = [];
   List<Ano> _anos = [];

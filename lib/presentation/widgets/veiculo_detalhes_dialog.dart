@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tabela_fipe_changenotifier/domin/entities/veiculo.dart';
+import 'package:tabela_fipe_changenotifier/domain/entities/veiculo.dart';
 
 class VehicleDetailsDialog extends StatelessWidget {
   final Veiculo veiculo;

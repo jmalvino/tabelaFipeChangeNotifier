@@ -1,7 +1,8 @@
-import 'package:tabela_fipe_changenotifier/domin/entities/ano.dart';
-import 'package:tabela_fipe_changenotifier/domin/entities/marca.dart';
-import 'package:tabela_fipe_changenotifier/domin/entities/modelo.dart';
-import 'package:tabela_fipe_changenotifier/domin/entities/veiculo.dart';
+import 'package:tabela_fipe_changenotifier/domain/entities/ano.dart';
+import 'package:tabela_fipe_changenotifier/domain/entities/marca.dart';
+import 'package:tabela_fipe_changenotifier/domain/entities/modelo.dart';
+import 'package:tabela_fipe_changenotifier/domain/entities/schemas/veiculo_schema.dart';
+import 'package:tabela_fipe_changenotifier/domain/entities/veiculo.dart';
 import 'dart:convert';
 import '../../core/error/failure.dart';
 import 'package:dartz/dartz.dart';
@@ -32,7 +33,7 @@ class FipeDataSource {
   Future<Either<Failure, List<Modelo>>> getModelos(
       String tipoVeiculo, String marcaCodigo) async {
     final url = Uri.parse(
-      'https://parallelum.com.br/fipe/api/v1/$tipoVeiculo/marcas/$marcaCodigo/modelos',
+      '$_urlBase/$tipoVeiculo/marcas/$marcaCodigo/modelos',
     );
     try {
       final response = await client.get(url);
@@ -55,7 +56,7 @@ class FipeDataSource {
     String modeloCodigo,
   ) async {
     final url = Uri.parse(
-      'https://parallelum.com.br/fipe/api/v1/$tipoVeiculo/marcas/$marcaCodigo/modelos/$modeloCodigo/anos',
+      '$_urlBase/$tipoVeiculo/marcas/$marcaCodigo/modelos/$modeloCodigo/anos',
     );
     try {
       final response = await client.get(url);
@@ -77,21 +78,21 @@ class FipeDataSource {
     String anoCodigo,
   ) async {
     final url = Uri.parse(
-        'https://parallelum.com.br/fipe/api/v1/$tipoVeiculo/marcas/$marcaCodigo/modelos/$modeloCodigo/anos/$anoCodigo');
+        '$_urlBase/$tipoVeiculo/marcas/$marcaCodigo/modelos/$modeloCodigo/anos/$anoCodigo');
     try {
       final response = await client.get(url);
 
       final data = json.decode(response.body);
       final veiculo = Veiculo(
-        tipoVeiculo: data['TipoVeiculo'].toString(),
-        valor: data['Valor'],
-        marca: data['Marca'],
-        modelo: data['Modelo'],
-        anoModelo: data['AnoModelo'],
-        combustivel: data['Combustivel'],
-        codigoFipe: data['CodigoFipe'],
-        mesReferencia: data['MesReferencia'],
-        siglaCombustivel: data['SiglaCombustivel'],
+        tipoVeiculo: data[VeiculoSchema.veiculoTipoVeiculo].toString(),
+        valor: data[VeiculoSchema.veiculoValor],
+        marca: data[VeiculoSchema.veiculoMarca],
+        modelo: data[VeiculoSchema.veiculoModelo],
+        anoModelo: data[VeiculoSchema.veiculoAnoModelo],
+        combustivel: data[VeiculoSchema.veiculoCombustivel],
+        codigoFipe: data[VeiculoSchema.veiculoCodigoFipe],
+        mesReferencia: data[VeiculoSchema.veiculoMesReferencia],
+        siglaCombustivel: data[VeiculoSchema.veiculoSiglaCombustivel],
       );
       return Right(veiculo);
     } catch (e) {

@@ -1,4 +1,4 @@
-import 'package:tabela_fipe_changenotifier/domin/entities/schemas/marca_schema.dart';
+import 'package:tabela_fipe_changenotifier/domain/entities/schemas/marca_schema.dart';
 
 class Marca {
   final String codigo;

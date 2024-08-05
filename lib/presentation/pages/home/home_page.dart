@@ -33,7 +33,7 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               ElevatedButton(
-                onPressed: () => Modular.to.navigate('/consulta', arguments: {
+                onPressed: () => Modular.to.pushNamed('/home/consulta', arguments: {
                   'type': 'carros',
                 }),
                 style: ElevatedButton.styleFrom(
@@ -55,7 +55,7 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               ElevatedButton(
-                onPressed: () => Modular.to.navigate('/consulta', arguments: {
+                onPressed: () => Modular.to.pushNamed('/home/consulta', arguments: {
                   'type': 'motos',
                 }),
                 style: ElevatedButton.styleFrom(
@@ -77,7 +77,7 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               ElevatedButton(
-                onPressed: () => Modular.to.navigate('/consulta', arguments: {
+                onPressed: () => Modular.to.pushNamed('/home/consulta', arguments: {
                   'type': 'caminhoes',
                 }),
                 style: ElevatedButton.styleFrom(

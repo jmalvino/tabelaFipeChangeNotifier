@@ -19,6 +19,6 @@ class AppModule extends Module {
   void routes(r) {
     r.child('/', child: (context) => const SplashPage());
     r.module('/home', module: HomeModule());
-    r.module('/consulta', module: ConsultaModule());
+
   }
 }

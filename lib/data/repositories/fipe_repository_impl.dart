@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
-import 'package:tabela_fipe_changenotifier/domin/entities/ano.dart';
-import 'package:tabela_fipe_changenotifier/domin/entities/marca.dart';
-import 'package:tabela_fipe_changenotifier/domin/entities/modelo.dart';
-import 'package:tabela_fipe_changenotifier/domin/entities/veiculo.dart';
-import 'package:tabela_fipe_changenotifier/domin/repositories/fipe_repository.dart';
+import 'package:tabela_fipe_changenotifier/domain/entities/ano.dart';
+import 'package:tabela_fipe_changenotifier/domain/entities/marca.dart';
+import 'package:tabela_fipe_changenotifier/domain/entities/modelo.dart';
+import 'package:tabela_fipe_changenotifier/domain/entities/veiculo.dart';
+import 'package:tabela_fipe_changenotifier/domain/repositories/fipe_repository.dart';
 import '../../core/error/failure.dart';
 import '../datasources/fipe_datasource.dart';
 

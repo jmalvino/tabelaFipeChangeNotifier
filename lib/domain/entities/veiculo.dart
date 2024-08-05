@@ -1,4 +1,4 @@
-import 'package:tabela_fipe_changenotifier/domin/entities/schemas/veiculo_schema.dart';
+import 'package:tabela_fipe_changenotifier/domain/entities/schemas/veiculo_schema.dart';
 
 class Veiculo {
   final String tipoVeiculo;
