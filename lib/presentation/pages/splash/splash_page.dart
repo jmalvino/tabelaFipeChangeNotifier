@@ -27,9 +27,13 @@ class _SplashPageState extends State<SplashPage> {
         child: Padding(
           padding: const EdgeInsets.only(right: 20, bottom: 20),
           child: SizedBox(
-              width: 200,
-              height: 200,
-              child: Lottie.asset('lib/src/img/car_const_g.json')),
+            width: 200,
+            height: 200,
+            child: Lottie.asset(
+              'lib/src/img/car_const_g.json',
+              repeat: false,
+            ),
+          ),
         ),
       ),
     );
