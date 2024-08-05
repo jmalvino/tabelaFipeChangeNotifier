@@ -8,7 +8,17 @@ class GetVeiculo {
 
   GetVeiculo(this.repository);
 
-  Future<Either<Failure, Veiculo>> call(String tipoVeiculo, String marcaCodigo, String modeloCodigo, String anoCodigo) async {
-    return await repository.getVeiculo(tipoVeiculo, marcaCodigo, modeloCodigo, anoCodigo);
+  Future<Either<Failure, Veiculo>> call(
+    String tipoVeiculo,
+    String marcaCodigo,
+    String modeloCodigo,
+    String anoCodigo,
+  ) async {
+    return await repository.getVeiculo(
+      tipoVeiculo,
+      marcaCodigo,
+      modeloCodigo,
+      anoCodigo,
+    );
   }
 }

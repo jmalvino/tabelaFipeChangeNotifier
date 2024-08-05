@@ -6,9 +6,15 @@ import '../../core/error/failure.dart';
 class GetMarcas {
   final FipeRepository repository;
 
-  GetMarcas(this.repository);
+  GetMarcas(
+    this.repository,
+  );
 
-  Future<Either<Failure, List<Marca>>> call(String tipoVeiculo) async {
-    return await repository.getMarcas(tipoVeiculo);
+  Future<Either<Failure, List<Marca>>> call(
+    String tipoVeiculo,
+  ) async {
+    return await repository.getMarcas(
+      tipoVeiculo,
+    );
   }
 }

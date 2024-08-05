@@ -8,7 +8,15 @@ class GetAnos {
 
   GetAnos(this.repository);
 
-  Future<Either<Failure, List<Ano>>> call(String tipoVeiculo, String marcaCodigo, String modeloCodigo) async {
-    return await repository.getAnos(tipoVeiculo, marcaCodigo, modeloCodigo);
+  Future<Either<Failure, List<Ano>>> call(
+    String tipoVeiculo,
+    String marcaCodigo,
+    String modeloCodigo,
+  ) async {
+    return await repository.getAnos(
+      tipoVeiculo,
+      marcaCodigo,
+      modeloCodigo,
+    );
   }
 }

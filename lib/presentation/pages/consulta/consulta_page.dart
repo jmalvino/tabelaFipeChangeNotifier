@@ -1,251 +1,256 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:tabela_fipe_changenotifier/presentation/pages/consulta/consulta_state.dart';
+import 'package:tabela_fipe_changenotifier/presentation/widgets/custom_drop_down.dart';
 import 'package:tabela_fipe_changenotifier/presentation/widgets/veiculo_detalhes_dialog.dart';
-import '../../change_notifier/fipe_change_notifier.dart';
 
 class ConsultaPage extends StatefulWidget {
-  final String tipoVeiculo;
-
-  const ConsultaPage({super.key, required this.tipoVeiculo});
+  const ConsultaPage({super.key});
 
   @override
   _ConsultaPageState createState() => _ConsultaPageState();
 }
 
 class _ConsultaPageState extends State<ConsultaPage> {
-  String? _selectedMarca;
-  String? _selectedModelo;
-  String? _selectedAno;
+  late ConsultaState consultaState;
 
   @override
   void initState() {
     super.initState();
-    final fipeNotifier =
-        Provider.of<FipeChangeNotifier>(context, listen: false);
-    fipeNotifier.changeVehicleType(widget.tipoVeiculo);
+    consultaState = Modular.get<ConsultaState>();
+    consultaState.changeVehicleType(consultaState.tipoVeiculo);
   }
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
+  void _showVehicleDetailsDialog(BuildContext context) {
+    if (consultaState.veiculo != null) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return VehicleDetailsDialog(
+            veiculo: consultaState.veiculo!,
+          );
+        },
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final fipeNotifier = Provider.of<FipeChangeNotifier>(context);
-
     return Scaffold(
       backgroundColor: Colors.grey[900],
       appBar: AppBar(
+        automaticallyImplyLeading: true,
         iconTheme: IconThemeData(
           color: Colors.deepPurple[100],
         ),
         elevation: 0,
         backgroundColor: Colors.grey[900],
         title: Text(
-          'Consulta FIPE: ${widget.tipoVeiculo.toUpperCase()}',
+          'Consulta FIPE: ${consultaState.tipoVeiculo.toUpperCase()}',
           style: const TextStyle(
             color: Colors.grey,
+            fontSize: 16,
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              DropdownButton2<String>(
-                value: _selectedMarca,
-                hint: const Text(
-                  'Selecione a Marca',
-                  style: TextStyle(color: Colors.white),
-                ),
-                isExpanded: true,
-                buttonStyleData: ButtonStyleData(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.deepPurple[100]!, width: 1),
-                  ),
-                ),
-                dropdownStyleData: DropdownStyleData(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                items: fipeNotifier.marcas.map((marca) {
-                  return DropdownMenuItem<String>(
-                    value: marca.codigo,
-                    child: Text(
-                      marca.nome,
-                      style: TextStyle(
-                        color: marca.codigo == _selectedMarca
-                            ? Colors.deepPurple[200]
-                            : Colors.black,
+      body: ValueListenableBuilder(
+        valueListenable: consultaState.isLoading,
+        builder: (context, value, _) {
+          if (value) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CustomDropdown<String>(
+                    value: consultaState.selectedMarca,
+                    hint: 'Selecione a Marca',
+                    isExpanded: true,
+                    buttonStyleData: ButtonStyleData(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                            color: Colors.deepPurple[100]!, width: 1),
                       ),
                     ),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedMarca = value;
-                    _selectedModelo = null;
-                    _selectedAno = null;
-                  });
-                  fipeNotifier.fetchModelos(value!);
-                },
-              ),
-              const SizedBox(height: 20.0),
-              GestureDetector(
-                onTap: (){
-                  if(_selectedMarca == null){
-                    _showSnackbar(context, "Selecione primeiro a Marca");
-                  }
-                },
-                child: DropdownButton2<String>(
-                  value: _selectedModelo,
-                  style: const TextStyle(color: Colors.white),
-                  hint: const Text(
-                    'Selecione o Modelo',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  isExpanded: true,
-                  buttonStyleData: ButtonStyleData(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.deepPurple[100]!, width: 1),
+                    dropdownStyleData: DropdownStyleData(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
+                    items: consultaState.marcas.map((marca) {
+                      return DropdownMenuItem<String>(
+                        value: marca.codigo,
+                        child: Text(
+                          marca.nome,
+                          style: TextStyle(
+                            color: marca.codigo == consultaState.selectedMarca
+                                ? Colors.deepPurple[200]
+                                : Colors.black,
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      consultaState.selectedMarca = value;
+                      consultaState.fetchModelos(value!);
+                    },
                   ),
-                  dropdownStyleData: DropdownStyleData(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.deepPurple[100]!, width: 1),
-                    ),
-                  ),
-                  items: fipeNotifier.modelos.map((modelo) {
-                    return DropdownMenuItem<String>(
-                      value: modelo.codigo,
-                      child: Text(
-                        modelo.nome,
-                        style: TextStyle(
-                          color: modelo.codigo == _selectedModelo
-                              ? Colors.deepPurple[200]
-                              : Colors.black,
+                  const SizedBox(height: 20.0),
+                  GestureDetector(
+                    onTap: () {
+                      if (consultaState.selectedMarca == null) {
+                        _showSnackbar(context, "Selecione primeiro a Marca");
+                      }
+                    },
+                    child: CustomDropdown<String>(
+                      value: consultaState.selectedModelo,
+                      hint: 'Selecione o Modelo',
+                      isExpanded: true,
+                      buttonStyleData: ButtonStyleData(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                              color: Colors.deepPurple[100]!, width: 1),
                         ),
                       ),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedModelo = value;
-                      _selectedAno = null;
-                    });
-                    fipeNotifier.fetchAnos(_selectedMarca!, value!);
-                  },
-                ),
-              ),
-              const SizedBox(height: 20.0),
-              GestureDetector(
-                onTap: (){
-                  if(_selectedMarca == null){
-                    _showSnackbar(context, "Selecione primeiro a Marca");
-                  }else{
-                    _showSnackbar(context, "Selecione o Modelo");
-                  }
-                },
-                child: DropdownButton2<String>(
-                  value: _selectedAno,
-                  hint: const Text(
-                    'Selecione o Ano',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  isExpanded: true,
-                  buttonStyleData: ButtonStyleData(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.deepPurple[100]!, width: 1),
-                    ),
-                  ),
-                  dropdownStyleData: DropdownStyleData(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.deepPurple[100]!, width: 1),
-                    ),
-                  ),
-                  items: fipeNotifier.anos.map((ano) {
-                    return DropdownMenuItem<String>(
-                      value: ano.codigo,
-                      child: Text(
-                        ano.nome,
-                        style: TextStyle(
-                          color: ano.codigo == _selectedAno
-                              ? Colors.deepPurple[200]
-                              : Colors.black,
+                      dropdownStyleData: DropdownStyleData(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                              color: Colors.deepPurple[100]!, width: 1),
                         ),
                       ),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedAno = value;
-                    });
-                  },
-                ),
-              ),
-              Visibility(
-                visible: _selectedAno == null,
-                child: const Padding(
-                  padding: EdgeInsets.only(top: 15),
-                  child: Text(
-                    'Selecione todos os campos',
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 12,
+                      items: consultaState.modelos.map((modelo) {
+                        return DropdownMenuItem<String>(
+                          value: modelo.codigo,
+                          child: Text(
+                            modelo.nome,
+                            style: TextStyle(
+                              color:
+                                  modelo.codigo == consultaState.selectedModelo
+                                      ? Colors.deepPurple[200]
+                                      : Colors.black,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        consultaState.setModelo = value;
+                        consultaState.fetchAnos(
+                            consultaState.selectedMarca!, value!);
+                      },
                     ),
                   ),
-                ),
-              ),
-              const SizedBox(height: 25.0),
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: ElevatedButton(
-                  onPressed: _selectedMarca != null &&
-                          _selectedModelo != null &&
-                          _selectedAno != null
-                      ? () async {
-                          await fipeNotifier.fetchVeiculo(
-                              _selectedMarca!, _selectedModelo!, _selectedAno!);
-                          if (fipeNotifier.veiculo != null) {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return VehicleDetailsDialog(
-                                  veiculo: fipeNotifier.veiculo!,
-                                );
-                              },
+                  const SizedBox(height: 20.0),
+                  GestureDetector(
+                    onTap: () {
+                      if (consultaState.selectedMarca == null) {
+                        _showSnackbar(context, "Selecione primeiro a Marca");
+                      } else {
+                        _showSnackbar(context, "Selecione o Modelo");
+                      }
+                    },
+                    child: ValueListenableBuilder(
+                      valueListenable: consultaState.selectedAnoNotifier,
+                      builder: (context, value, _) {
+                        return CustomDropdown<String>(
+                          value: consultaState.selectAno,
+                          hint: 'Selecione o Ano',
+                          isExpanded: true,
+                          buttonStyleData: ButtonStyleData(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                  color: Colors.deepPurple[100]!, width: 1),
+                            ),
+                          ),
+                          dropdownStyleData: DropdownStyleData(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                  color: Colors.deepPurple[100]!, width: 1),
+                            ),
+                          ),
+                          items: consultaState.anos.map((ano) {
+                            return DropdownMenuItem<String>(
+                              value: ano.codigo,
+                              child: Text(
+                                ano.nome,
+                                style: TextStyle(
+                                  color: ano.codigo ==
+                                          consultaState
+                                              .selectedAnoNotifier.value
+                                      ? Colors.deepPurple[200]
+                                      : Colors.black,
+                                ),
+                              ),
                             );
-                          }
+                          }).toList(),
+                          onChanged: (value) {
+                            consultaState.selectedAno = value;
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 25.0),
+                  ValueListenableBuilder(
+                      valueListenable: consultaState.isFormComplete,
+                      builder: (context, value, _) {
+                        if (!value) {
+                          return const Padding(
+                            padding: EdgeInsets.only(top: 15),
+                            child: Text(
+                              'Selecione todos os campos',
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 12,
+                              ),
+                            ),
+                          );
+                        } else {
+                          return SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                consultaState
+                                    .fetchVeiculo(
+                                        consultaState.selectedMarca!,
+                                        consultaState.selectedModelo!,
+                                        consultaState
+                                            .selectedAnoNotifier.value!)
+                                    .then((_) {
+                                  _showVehicleDetailsDialog(context);
+                                });
+                              },
+                              child: const Text('Consultar'),
+                            ),
+                          );
                         }
-                      : null,
-                  child: const Text('Consultar'),
-                ),
+                      }),
+                  if (consultaState.errorMessage != null) ...[
+                    const SizedBox(height: 16.0),
+                    Text(
+                      consultaState.errorMessage!,
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                  ],
+                ],
               ),
-              if (fipeNotifier.errorMessage != null) ...[
-                const SizedBox(height: 16.0),
-                Text(
-                  fipeNotifier.errorMessage!,
-                  style: const TextStyle(color: Colors.red),
-                ),
-              ],
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -259,5 +264,4 @@ class _ConsultaPageState extends State<ConsultaPage> {
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
-
 }

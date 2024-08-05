@@ -4,8 +4,7 @@ import 'package:tabela_fipe_changenotifier/domin/entities/veiculo.dart';
 class VehicleDetailsDialog extends StatelessWidget {
   final Veiculo veiculo;
 
-  const VehicleDetailsDialog({Key? key, required this.veiculo})
-      : super(key: key);
+  const VehicleDetailsDialog({super.key, required this.veiculo});
 
   @override
   Widget build(BuildContext context) {
@@ -19,89 +18,95 @@ class VehicleDetailsDialog extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: orientation == Orientation.portrait
-              ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    textFormat('Marca:', veiculo.marca),
-                    textFormat('Modelo:', veiculo.modelo),
-                    textFormat('Ano:', '${veiculo.anoModelo}'),
-                    textFormat('Combustível:', veiculo.combustivel),
-                    textFormat('Valor:', veiculo.valor),
-                    textFormat('Mês de Referência:', veiculo.mesReferencia),
-                    const SizedBox(height: 16.0),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: ElevatedButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: const Text('Fechar'),
-                      ),
-                    ),
-                  ],
-                )
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            textFormat('Marca:', veiculo.marca),
-                            textFormat('Modelo:', veiculo.modelo),
-                            textFormat('Ano:', '${veiculo.anoModelo}'),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            textFormat('Combustível:', veiculo.combustivel),
-                            textFormat('Valor:', veiculo.valor),
-                            textFormat(
-                                'Mês de Referência:', veiculo.mesReferencia),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16.0),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.5,
-                        child: ElevatedButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: const Text('Fechar'),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+              ? _buildPortraitContent(context)
+              : _buildLandscapeContent(context),
         ),
       ),
     );
   }
 
-  Widget textFormat(String text, String valor) {
+  Widget _buildPortraitContent(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _textFormat('Marca:', veiculo.marca),
+        _textFormat('Modelo:', veiculo.modelo),
+        _textFormat('Ano:', '${veiculo.anoModelo}'),
+        _textFormat('Combustível:', veiculo.combustivel),
+        _textFormat('Valor:', veiculo.valor),
+        _textFormat('Mês de Referência:', veiculo.mesReferencia),
+        const SizedBox(height: 16.0),
+        Align(
+          alignment: Alignment.centerRight,
+          child: ElevatedButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Fechar'),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLandscapeContent(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                _textFormat('Marca:', veiculo.marca),
+                _textFormat('Modelo:', veiculo.modelo),
+                _textFormat('Ano:', '${veiculo.anoModelo}'),
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                _textFormat('Combustível:', veiculo.combustivel),
+                _textFormat('Valor:', veiculo.valor),
+                _textFormat('Mês de Referência:', veiculo.mesReferencia),
+              ],
+            ),
+          ],
+        ),
+        const SizedBox(height: 16.0),
+        Align(
+          alignment: Alignment.center,
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.5,
+            child: ElevatedButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Fechar'),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _textFormat(String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            text,
+            label,
             style: TextStyle(
               color: Colors.deepPurple[100],
             ),
           ),
           Text(
-            valor,
+            value,
             style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,

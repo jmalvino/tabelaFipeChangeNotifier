@@ -8,7 +8,13 @@ class GetModelos {
 
   GetModelos(this.repository);
 
-  Future<Either<Failure, List<Modelo>>> call(String tipoVeiculo, String marcaCodigo) async {
-    return await repository.getModelos(tipoVeiculo, marcaCodigo);
+  Future<Either<Failure, List<Modelo>>> call(
+    String tipoVeiculo,
+    String marcaCodigo,
+  ) async {
+    return await repository.getModelos(
+      tipoVeiculo,
+      marcaCodigo,
+    );
   }
 }

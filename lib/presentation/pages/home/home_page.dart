@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../consulta/consulta_page.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,14 +17,14 @@ class HomePage extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView (
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(30.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Container(
+              SizedBox(
                 width: 200,
                 height: 200,
                 child: Image.asset(
@@ -33,13 +33,9 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               ElevatedButton(
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        const ConsultaPage(tipoVeiculo: 'carros'),
-                  ),
-                ),
+                onPressed: () => Modular.to.navigate('/consulta', arguments: {
+                  'type': 'carros',
+                }),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.grey[800],
                   shape: const RoundedRectangleBorder(
@@ -59,13 +55,9 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               ElevatedButton(
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        const ConsultaPage(tipoVeiculo: 'motos'),
-                  ),
-                ),
+                onPressed: () => Modular.to.navigate('/consulta', arguments: {
+                  'type': 'motos',
+                }),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.grey[800],
                   shape: const RoundedRectangleBorder(
@@ -85,13 +77,9 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               ElevatedButton(
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        const ConsultaPage(tipoVeiculo: 'caminhoes'),
-                  ),
-                ),
+                onPressed: () => Modular.to.navigate('/consulta', arguments: {
+                  'type': 'caminhoes',
+                }),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.grey[800],
                   shape: const RoundedRectangleBorder(
