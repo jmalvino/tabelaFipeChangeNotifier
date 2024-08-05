@@ -9,11 +9,10 @@ class Marca {
     required this.nome,
   });
 
-  factory Marca.fromMap(Map<String, dynamic> map){
+  factory Marca.fromMap(Map<String, dynamic> map) {
     return Marca(
       codigo: map[MarcaSchema.marcaCodigo] as String,
       nome: map[MarcaSchema.marcaNome] as String,
     );
   }
-
 }

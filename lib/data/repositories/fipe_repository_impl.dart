@@ -18,17 +18,21 @@ class FipeRepositoryImpl implements FipeRepository {
   }
 
   @override
-  Future<Either<Failure, List<Modelo>>> getModelos(String tipoVeiculo, String marcaCodigo) {
+  Future<Either<Failure, List<Modelo>>> getModelos(
+      String tipoVeiculo, String marcaCodigo) {
     return dataSource.getModelos(tipoVeiculo, marcaCodigo);
   }
 
   @override
-  Future<Either<Failure, List<Ano>>> getAnos(String tipoVeiculo, String marcaCodigo, String modeloCodigo) {
+  Future<Either<Failure, List<Ano>>> getAnos(
+      String tipoVeiculo, String marcaCodigo, String modeloCodigo) {
     return dataSource.getAnos(tipoVeiculo, marcaCodigo, modeloCodigo);
   }
 
   @override
-  Future<Either<Failure, Veiculo>> getVeiculo(String tipoVeiculo, String marcaCodigo, String modeloCodigo, String anoCodigo) {
-    return dataSource.getVeiculo(tipoVeiculo, marcaCodigo, modeloCodigo, anoCodigo);
+  Future<Either<Failure, Veiculo>> getVeiculo(String tipoVeiculo,
+      String marcaCodigo, String modeloCodigo, String anoCodigo) {
+    return dataSource.getVeiculo(
+        tipoVeiculo, marcaCodigo, modeloCodigo, anoCodigo);
   }
 }

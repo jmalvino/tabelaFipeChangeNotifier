@@ -1,5 +1,4 @@
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:tabela_fipe_changenotifier/core/modules/consulta_module.dart';
 import 'package:tabela_fipe_changenotifier/core/modules/home_module.dart';
 import 'package:tabela_fipe_changenotifier/presentation/pages/splash/splash_page.dart';
 import 'package:tabela_fipe_changenotifier/presentation/pages/splash/splash_state.dart';
@@ -19,6 +18,5 @@ class AppModule extends Module {
   void routes(r) {
     r.child('/', child: (context) => const SplashPage());
     r.module('/home', module: HomeModule());
-
   }
 }

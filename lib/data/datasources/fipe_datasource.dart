@@ -12,7 +12,7 @@ class FipeDataSource {
   final http.Client client;
 
   FipeDataSource(this.client);
-/// refazer
+
   final String _urlBase = 'https://parallelum.com.br/fipe/api/v1';
 
   Future<Either<Failure, List<Marca>>> getMarcas(String tipoVeiculo) async {
@@ -62,9 +62,7 @@ class FipeDataSource {
       final response = await client.get(url);
 
       final List<dynamic> data = json.decode(response.body);
-      final List<Ano> anos = data
-          .map((json) => Ano.fromMap(json))
-          .toList();
+      final List<Ano> anos = data.map((json) => Ano.fromMap(json)).toList();
       return Right(anos);
     } catch (e) {
       return Left(ServerFailure('Ocorreu um erro ao recuperar a lista'));
